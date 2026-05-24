@@ -7,6 +7,7 @@ import appRouter from "./routes";
 import { configs } from "./app/configs";
 import bcrypt from "bcrypt";
 import cron from "node-cron";
+import { User } from "./app/modules/user/user.model";
 
 const app = express();
 
@@ -14,10 +15,10 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
- "https://zonivaa.netlify.app",
- "https://zoniva-dashboard.netlify.app",
- "https://amazoncore.netlify.app",
- "https://amazoncore-dashboard.netlify.app"
+  "https://zonivaa.netlify.app",
+  "https://zoniva-dashboard.netlify.app",
+  "https://amazoncore.netlify.app",
+  "https://amazoncore-dashboard.netlify.app"
 ];
 
 app.use(
@@ -52,36 +53,34 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
-// export const createDefaultSuperAdmin = async () => {
-//   try {
-//     const existingAdmin = await User_Model.findOne({
-//       phoneNumber: "01700000000",
-//     });
+export const createDefaultSuperAdmin = async () => {
+  try {
+    const existingAdmin = await User.findOne({
+      email: "angela_daughter@gmail.com",
+    });
 
-//     if (!existingAdmin) {
-//       const hashedPassword = await bcrypt.hash(
-//         "admin@123",
-//         Number(configs.bcrypt_salt_rounds),
-//       );
+    if (!existingAdmin) {
+      const hashedPassword = await bcrypt.hash(
+        "admin@123",
+        Number(configs.bcrypt_salt_rounds),
+      );
 
-//       await User_Model.create({
-//         password: hashedPassword,
-//         confirmPassword: hashedPassword,
-//         role: "admin",
-//         phoneNumber: "01700000000",
-//         name: "Admin",
-//         invitationCode: "adminCode",
-//       });
-//       console.log("✅ Default Admin created.");
-//     } else {
-//       console.log("ℹ️ Admin already exists.");
-//     }
-//   } catch (error) {
-//     console.log("❌ Failed to create default admin:", error);
-//   }
-// };
+      await User.create({
+        name: "Angela Daugher",
+        email: "angela_daughter@gmail.com",
+        password: hashedPassword
 
-// createDefaultSuperAdmin();
+      });
+      console.log("✅ Default Admin created.");
+    } else {
+      console.log("ℹ️ Admin already exists.");
+    }
+  } catch (error) {
+    console.log("❌ Failed to create default admin:", error);
+  }
+};
+
+createDefaultSuperAdmin();
 
 
 // global error handler
