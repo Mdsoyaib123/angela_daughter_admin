@@ -4,7 +4,6 @@ import express, { Request, Response } from "express";
 import globalErrorHandler from "./app/middlewares/global_error_handler";
 import notFound from "./app/middlewares/not_found_api";
 import appRouter from "./routes";
-import { User_Model } from "./app/modules/user/user.schema";
 import { configs } from "./app/configs";
 import bcrypt from "bcrypt";
 import cron from "node-cron";
@@ -53,49 +52,41 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
-export const createDefaultSuperAdmin = async () => {
-  try {
-    const existingAdmin = await User_Model.findOne({
-      phoneNumber: "01700000000",
-    });
+// export const createDefaultSuperAdmin = async () => {
+//   try {
+//     const existingAdmin = await User_Model.findOne({
+//       phoneNumber: "01700000000",
+//     });
 
-    if (!existingAdmin) {
-      const hashedPassword = await bcrypt.hash(
-        "admin@123",
-        Number(configs.bcrypt_salt_rounds),
-      );
+//     if (!existingAdmin) {
+//       const hashedPassword = await bcrypt.hash(
+//         "admin@123",
+//         Number(configs.bcrypt_salt_rounds),
+//       );
 
-      await User_Model.create({
-        password: hashedPassword,
-        confirmPassword: hashedPassword,
-        role: "admin",
-        phoneNumber: "01700000000",
-        name: "Admin",
-        invitationCode: "adminCode",
-      });
-      console.log("✅ Default Admin created.");
-    } else {
-      console.log("ℹ️ Admin already exists.");
-    }
-  } catch (error) {
-    console.log("❌ Failed to create default admin:", error);
-  }
-};
+//       await User_Model.create({
+//         password: hashedPassword,
+//         confirmPassword: hashedPassword,
+//         role: "admin",
+//         phoneNumber: "01700000000",
+//         name: "Admin",
+//         invitationCode: "adminCode",
+//       });
+//       console.log("✅ Default Admin created.");
+//     } else {
+//       console.log("ℹ️ Admin already exists.");
+//     }
+//   } catch (error) {
+//     console.log("❌ Failed to create default admin:", error);
+//   }
+// };
 
-createDefaultSuperAdmin();
+// createDefaultSuperAdmin();
 
-// Runs every day at 12:00 AM
-cron.schedule("0 0 * * *", async () => {
-  try {
-    await User_Model.updateMany({}, { $set: { dailyProfit: 0 } });
-
-    console.log("✅ Daily profit reset successfully");
-  } catch (error) {
-    console.error("❌ Daily profit reset failed:", error);
-  }
-});
 
 // global error handler
+
+
 app.use(globalErrorHandler);
 app.use(notFound);
 
