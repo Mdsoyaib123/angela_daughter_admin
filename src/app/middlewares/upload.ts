@@ -1,26 +1,53 @@
 // src/middlewares/upload.ts
+
 import multer from "multer";
 import multerS3 from "multer-s3";
 import path from "path";
+import crypto from "crypto";
 import { s3Client } from "../configs/s3.config";
 
 const allowedMimeTypes = [
     "image/jpeg",
     "image/png",
     "image/webp",
+
     "video/mp4",
     "video/webm",
-    "video/quicktime",
+
+    "video/quicktime", // .mov
+
+    "video/x-msvideo",
+    "video/x-matroska",
+    "application/octet-stream",
 ];
 
 export const upload = multer({
     storage: multerS3({
         s3: s3Client,
         bucket: process.env.AWS_S3_BUCKET_NAME!,
+
         contentType: multerS3.AUTO_CONTENT_TYPE,
+
+        contentDisposition: "inline",
+
         key: (_req, file, cb) => {
+            let folder = "uploads";
+
+            if (file.fieldname === "MainVideo_url") {
+                folder = "highlights/main-video";
+            }
+
+            if (file.fieldname === "videos") {
+                folder = "highlights/videos";
+            }
+
+            if (file.fieldname === "feedVideos") {
+                folder = "highlights/feed-videos";
+            }
+
             const ext = path.extname(file.originalname);
-            const fileName = `uploads/${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
+            const fileName = `${folder}/${crypto.randomUUID()}${ext}`;
+
             cb(null, fileName);
         },
     }),
@@ -34,6 +61,6 @@ export const upload = multer({
     },
 
     limits: {
-        fileSize: 100 * 1024 * 1024, // 100MB
+        fileSize: 500 * 1024 * 1024,
     },
 });

@@ -9,6 +9,23 @@ const createHome = async (payload: any) => {
         DOUBLE_DOUBLES: payload.DOUBLE_DOUBLES,
         REBOUNDS: payload.REBOUNDS
     }
+
+    const isActive =
+        payload.isActive === "false" ? false : true;
+
+    // make previous active highlights inactive
+    if (isActive) {
+        await Home.updateMany(
+            { isActive: true },
+            {
+                $set: {
+                    isActive: false,
+                },
+            }
+        );
+    }
+
+
     const result = await Home.create({ ...payload, NUMBERS });
     return result;
 };
@@ -98,13 +115,13 @@ const deleteHome = async (id: string) => {
 };
 
 const getActiveHome = async () => {
-  const result = await Home.findOne({ isActive: true });
+    const result = await Home.findOne({ isActive: true });
 
-  if (!result) {
-    throw new Error("Active home data not found");
-  }
+    if (!result) {
+        throw new Error("Active home data not found");
+    }
 
-  return result;
+    return result;
 };
 
 export const HomeServices = {
