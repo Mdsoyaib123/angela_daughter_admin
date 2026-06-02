@@ -82,7 +82,6 @@ const deleteHighlights = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: "Highlights deleted successfully",
-      data: result,
     });
   } catch (error: any) {
     res.status(400).json({

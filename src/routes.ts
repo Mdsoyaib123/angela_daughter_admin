@@ -5,6 +5,8 @@ import { HomeRoutes } from "./app/modules/home/home.route";
 import { HighlightsRoutes } from "./app/modules/highlights/highlights.route";
 import { AboutRoutes } from "./app/modules/about/about.route";
 import { GalleryRoutes } from "./app/modules/gallery/gallery.route";
+import { ContactRoutes } from "./app/modules/contact/contact.route";
+import { FooterRoutes } from "./app/modules/footer/footer.route";
 
 const appRouter = Router();
 
@@ -15,6 +17,8 @@ const moduleRoutes = [
   { path: "/about", route: AboutRoutes },
   { path: "/highlights", route: HighlightsRoutes },
   { path: "/gallery", route: GalleryRoutes },
+  { path: "/contact", route: ContactRoutes },
+  { path: "/footer", route: FooterRoutes },
 ];
 
 moduleRoutes.forEach((route) => appRouter.use(route.path, route.route));

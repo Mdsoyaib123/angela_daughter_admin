@@ -80,7 +80,6 @@ const deleteAbout = async (req: Request, res: Response) => {
     res.status(200).json({
       success: true,
       message: "About deleted successfully",
-      data: result,
     });
   } catch (error: any) {
     res.status(400).json({
