@@ -45,6 +45,19 @@ export const upload = multer({
                 folder = "highlights/feed-videos";
             }
 
+            if (
+                file.fieldname === "bannerImgUrl" ||
+                file.fieldname === "earlyBeginningImgUrl" ||
+                file.fieldname === "fristVictoryImgUrl" ||
+                file.fieldname === "tranningImgUrl" ||
+                file.fieldname === "accoladesMilestonesImgUrl" ||
+                file.fieldname === "playerReflectionImgUrl"
+            ) {
+                folder = "about";
+            }
+
+            
+
             const ext = path.extname(file.originalname);
             const fileName = `${folder}/${crypto.randomUUID()}${ext}`;
 

@@ -24,7 +24,7 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: [true, "Password is required"],
       select: false,
-    },
+    }
   },
   {
     timestamps: true,
