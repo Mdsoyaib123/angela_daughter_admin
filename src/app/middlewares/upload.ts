@@ -56,7 +56,22 @@ export const upload = multer({
                 folder = "about";
             }
 
-            
+            if (
+                file.fieldname === "bannerFristImg" ||
+                file.fieldname === "bannerSecondImg"
+            ) {
+                folder = "gallery/banner";
+            }
+
+            if (file.fieldname === "mentorshipImgUrl") {
+                folder = "gallery/mentorship";
+            }
+
+            if (file.fieldname === "photos") {
+                folder = "gallery/photos";
+            }
+
+
 
             const ext = path.extname(file.originalname);
             const fileName = `${folder}/${crypto.randomUUID()}${ext}`;
