@@ -7,6 +7,7 @@ import { AboutRoutes } from "./app/modules/about/about.route";
 import { GalleryRoutes } from "./app/modules/gallery/gallery.route";
 import { ContactRoutes } from "./app/modules/contact/contact.route";
 import { FooterRoutes } from "./app/modules/footer/footer.route";
+import { ScheduleRoutes } from "./app/modules/schedule/schedule.route";
 
 const appRouter = Router();
 
@@ -18,6 +19,7 @@ const moduleRoutes = [
   { path: "/highlights", route: HighlightsRoutes },
   { path: "/gallery", route: GalleryRoutes },
   { path: "/contact", route: ContactRoutes },
+  { path: "/schedule", route: ScheduleRoutes },
   { path: "/footer", route: FooterRoutes },
 ];
 
