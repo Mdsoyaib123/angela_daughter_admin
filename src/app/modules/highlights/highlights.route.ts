@@ -32,4 +32,26 @@ router.patch(
 
 router.delete("/delete/:id", HighlightsControllers.deleteHighlights);
 
+router.patch(
+  "/:highlightsId/videos/:videoId",
+  upload.single("video"),
+  HighlightsControllers.updateSingleVideo
+);
+
+router.delete(
+  "/delete/:highlightsId/videos/:videoId",
+  HighlightsControllers.deleteSingleVideo
+);
+
+router.patch(
+  "/:highlightsId/feed-videos/:feedVideoId",
+  upload.single("feedVideo"),
+  HighlightsControllers.updateSingleFeedVideo
+);
+
+router.delete(
+  "/delete/:highlightsId/feed-videos/:feedVideoId",
+  HighlightsControllers.deleteSingleFeedVideo
+);
+
 export const HighlightsRoutes = router;

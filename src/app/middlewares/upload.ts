@@ -45,6 +45,14 @@ export const upload = multer({
                 folder = "highlights/feed-videos";
             }
 
+            if (file.fieldname === "video") {
+                folder = "highlights/videos";
+            }
+
+            if (file.fieldname === "feedVideo") {
+                folder = "highlights/feed-videos";
+            }
+
             if (
                 file.fieldname === "bannerImgUrl" ||
                 file.fieldname === "earlyBeginningImgUrl" ||

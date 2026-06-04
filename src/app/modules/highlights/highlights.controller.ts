@@ -5,6 +5,8 @@ import { HighlightsServices } from "./highlights.service";
 
 const createHighlights = async (req: Request, res: Response) => {
   try {
+
+    console.log("req.file", req.files)
     const result = await HighlightsServices.createHighlights(req.body, req.files);
 
     res.status(201).json({
@@ -91,10 +93,102 @@ const deleteHighlights = async (req: Request, res: Response) => {
   }
 };
 
+
+const updateSingleVideo = async (req: Request, res: Response) => {
+  try {
+     console.log("req.file", req.file)
+
+    const result = await HighlightsServices.updateSingleVideo(
+      req.params.highlightsId,
+      req.params.videoId,
+      req.body,
+      req.file
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Video updated successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message || "Failed to update video",
+    });
+  }
+};
+
+const deleteSingleVideo = async (req: Request, res: Response) => {
+  try {
+    const result = await HighlightsServices.deleteSingleVideo(
+      req.params.highlightsId,
+      req.params.videoId
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Video deleted successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message || "Failed to delete video",
+    });
+  }
+};
+
+const updateSingleFeedVideo = async (req: Request, res: Response) => {
+  try {
+     console.log("req.file", req.file)
+    const result = await HighlightsServices.updateSingleFeedVideo(
+      req.params.highlightsId,
+      req.params.feedVideoId,
+      req.body,
+      req.file
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Feed video updated successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message || "Failed to update feed video",
+    });
+  }
+};
+
+const deleteSingleFeedVideo = async (req: Request, res: Response) => {
+  try {
+    const result = await HighlightsServices.deleteSingleFeedVideo(
+      req.params.highlightsId,
+      req.params.feedVideoId
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Feed video deleted successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message || "Failed to delete feed video",
+    });
+  }
+};
+
 export const HighlightsControllers = {
   createHighlights,
   getHighlights,
   getActiveHighlights,
   updateHighlights,
   deleteHighlights,
+  updateSingleVideo,
+  deleteSingleVideo,
+  updateSingleFeedVideo,
+  deleteSingleFeedVideo,
 };

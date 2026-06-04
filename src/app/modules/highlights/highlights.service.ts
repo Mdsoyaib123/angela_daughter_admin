@@ -179,10 +179,153 @@ const deleteHighlights = async (id: string) => {
     return result;
 };
 
+const updateSingleVideo = async (
+    highlightsId: string,
+    videoId: string,
+    payload: any,
+    file: any
+) => {
+    const highlights = await Highlights.findById(highlightsId);
+
+    if (!highlights) {
+        throw new Error("Highlights not found");
+    }
+
+    const videoIndex = highlights.videos.findIndex(
+        (video: any) => video._id?.toString() === videoId
+    );
+
+    if (videoIndex === -1) {
+        throw new Error("Video not found");
+    }
+
+    const existingVideo: any = highlights.videos[videoIndex];
+
+    if (file?.location) {
+        await deleteFromS3(existingVideo.video_url);
+        existingVideo.video_url = file.location;
+    }
+
+    if (payload.video_name) {
+        existingVideo.video_name = payload.video_name;
+    }
+
+    if (payload.video_type) {
+        existingVideo.video_type = payload.video_type;
+    }
+
+    highlights.videos[videoIndex] = existingVideo;
+
+    await highlights.save();
+
+    return highlights;
+};
+
+const deleteSingleVideo = async (
+    highlightsId: string,
+    videoId: string
+) => {
+    const highlights = await Highlights.findById(highlightsId);
+
+    if (!highlights) {
+        throw new Error("Highlights not found");
+    }
+
+    const videoIndex = highlights.videos.findIndex(
+        (video: any) => video._id?.toString() === videoId
+    );
+
+    if (videoIndex === -1) {
+        throw new Error("Video not found");
+    }
+
+    const existingVideo: any = highlights.videos[videoIndex];
+
+    await deleteFromS3(existingVideo.video_url);
+
+    highlights.videos.splice(videoIndex, 1);
+
+    await highlights.save();
+
+    return highlights;
+};
+
+const updateSingleFeedVideo = async (
+    highlightsId: string,
+    feedVideoId: string,
+    payload: any,
+    file: any
+) => {
+    const highlights = await Highlights.findById(highlightsId);
+
+    if (!highlights) {
+        throw new Error("Highlights not found");
+    }
+
+    const feedVideoIndex = highlights.feedVideos.findIndex(
+        (video: any) => video._id?.toString() === feedVideoId
+    );
+
+    if (feedVideoIndex === -1) {
+        throw new Error("Feed video not found");
+    }
+
+    const existingFeedVideo: any = highlights.feedVideos[feedVideoIndex];
+
+    if (file?.location) {
+        await deleteFromS3(existingFeedVideo.video_url);
+        existingFeedVideo.video_url = file.location;
+    }
+
+    if (payload.title) {
+        existingFeedVideo.title = payload.title;
+    }
+
+    highlights.feedVideos[feedVideoIndex] = existingFeedVideo;
+
+    await highlights.save();
+
+    return highlights;
+};
+
+const deleteSingleFeedVideo = async (
+    highlightsId: string,
+    feedVideoId: string
+) => {
+    const highlights = await Highlights.findById(highlightsId);
+
+    if (!highlights) {
+        throw new Error("Highlights not found");
+    }
+
+    const feedVideoIndex = highlights.feedVideos.findIndex(
+        (video: any) => video._id?.toString() === feedVideoId
+    );
+
+    if (feedVideoIndex === -1) {
+        throw new Error("Feed video not found");
+    }
+
+    const existingFeedVideo: any = highlights.feedVideos[feedVideoIndex];
+
+    await deleteFromS3(existingFeedVideo.video_url);
+
+    highlights.feedVideos.splice(feedVideoIndex, 1);
+
+    await highlights.save();
+
+    return highlights;
+};
+
+
 export const HighlightsServices = {
     createHighlights,
     getHighlights,
     getActiveHighlights,
     updateHighlights,
     deleteHighlights,
+    updateSingleVideo,
+    deleteSingleVideo,
+    updateSingleFeedVideo,
+    deleteSingleFeedVideo,
 };

@@ -28,13 +28,11 @@ const videoSchema = new Schema<IVideo>(
             required: [true, "Video URL is required"],
             trim: true,
         },
-
         video_name: {
             type: String,
             required: [true, "Video name is required"],
             trim: true,
         },
-
         video_type: {
             type: String,
             required: [true, "Video type is required"],
@@ -42,7 +40,7 @@ const videoSchema = new Schema<IVideo>(
         },
     },
     {
-        _id: false,
+        _id: true,
     }
 );
 
@@ -53,7 +51,6 @@ const feedVideoSchema = new Schema<IFeedVideo>(
             required: [true, "Title is required"],
             trim: true,
         },
-
         video_url: {
             type: String,
             required: [true, "Video URL is required"],
@@ -61,7 +58,7 @@ const feedVideoSchema = new Schema<IFeedVideo>(
         },
     },
     {
-        _id: false,
+        _id: true,
     }
 );
 
