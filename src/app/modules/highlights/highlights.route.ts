@@ -54,4 +54,16 @@ router.delete(
   HighlightsControllers.deleteSingleFeedVideo
 );
 
+router.post(
+  "/:highlightsId/videos/add",
+  upload.single("video"),
+  HighlightsControllers.addSingleVideo
+);
+
+router.post(
+  "/:highlightsId/feed-videos/add",
+  upload.single("feedVideo"),
+  HighlightsControllers.addSingleFeedVideo
+);
+
 export const HighlightsRoutes = router;

@@ -180,6 +180,50 @@ const deleteSingleFeedVideo = async (req: Request, res: Response) => {
     });
   }
 };
+const addSingleVideo = async (req: Request, res: Response) => {
+  try {
+    console.log('hit the api ')
+console.log("req.body", req.body)
+    console.log("req.file", req.file)
+    const result = await HighlightsServices.addSingleVideo(
+      req.params.highlightsId,
+      req.body,
+      req.file
+    );
+
+    res.status(201).json({
+      success: true,
+      message: "Video added successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message || "Failed to add video",
+    });
+  }
+};
+
+const addSingleFeedVideo = async (req: Request, res: Response) => {
+  try {
+    const result = await HighlightsServices.addSingleFeedVideo(
+      req.params.highlightsId,
+      req.body,
+      req.file
+    );
+
+    res.status(201).json({
+      success: true,
+      message: "Feed video added successfully",
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      success: false,
+      message: error.message || "Failed to add feed video",
+    });
+  }
+};
 
 export const HighlightsControllers = {
   createHighlights,
@@ -187,8 +231,12 @@ export const HighlightsControllers = {
   getActiveHighlights,
   updateHighlights,
   deleteHighlights,
+
   updateSingleVideo,
   deleteSingleVideo,
   updateSingleFeedVideo,
   deleteSingleFeedVideo,
+
+  addSingleVideo,
+  addSingleFeedVideo,
 };

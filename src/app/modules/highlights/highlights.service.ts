@@ -317,15 +317,74 @@ const deleteSingleFeedVideo = async (
     return highlights;
 };
 
+const addSingleVideo = async (
+  highlightsId: string,
+  payload: any,
+  file: any
+) => {
+  const highlights = await Highlights.findById(highlightsId);
+
+  if (!highlights) {
+    throw new Error("Highlights not found");
+  }
+
+  if (!file?.location) {
+    throw new Error("Video file is required");
+  }
+
+  const newVideo = {
+    video_url: file.location,
+    video_name: payload.video_name || file.originalname,
+    video_type: payload.video_type || file.mimetype,
+  };
+
+  highlights.videos.push(newVideo);
+
+  await highlights.save();
+
+  return highlights;
+};
+
+const addSingleFeedVideo = async (
+  highlightsId: string,
+  payload: any,
+  file: any
+) => {
+  const highlights = await Highlights.findById(highlightsId);
+
+  if (!highlights) {
+    throw new Error("Highlights not found");
+  }
+
+  if (!file?.location) {
+    throw new Error("Feed video file is required");
+  }
+
+  const newFeedVideo = {
+    video_url: file.location,
+    title: payload.title || file.originalname,
+  };
+
+  highlights.feedVideos.push(newFeedVideo);
+
+  await highlights.save();
+
+  return highlights;
+};
+
 
 export const HighlightsServices = {
-    createHighlights,
-    getHighlights,
-    getActiveHighlights,
-    updateHighlights,
-    deleteHighlights,
-    updateSingleVideo,
-    deleteSingleVideo,
-    updateSingleFeedVideo,
-    deleteSingleFeedVideo,
+  createHighlights,
+  getHighlights,
+  getActiveHighlights,
+  updateHighlights,
+  deleteHighlights,
+
+  updateSingleVideo,
+  deleteSingleVideo,
+  updateSingleFeedVideo,
+  deleteSingleFeedVideo,
+
+  addSingleVideo,
+  addSingleFeedVideo,
 };
